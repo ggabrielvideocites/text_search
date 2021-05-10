@@ -1,5 +1,4 @@
 from datetime import datetime
-#from text_index_documents import TextIndexDocuments
 from text_index_documents_threads import TextIndexDocuments
 from text_search_over_documets import TextSearchDocuments
 import time
@@ -29,7 +28,7 @@ if __name__ == '__main__':
     }
     list_docs = [input_doc, input_doc2]
     list_docs = []
-    for i in range(0, 1):
+    for i in range(0, 100):
         list_docs.append({
             'id': 3 * i,
             'author': 'kimchy',
@@ -67,12 +66,16 @@ if __name__ == '__main__':
             'desc': 'khbuvkjb'
         })
     print(len(list_docs))
+
+
     input_key = 'id'
     input_look_for = 'ToM'
     input_list_fields = ['title1', 'title2', 'nested1.nested2', 'keywords.tags.text']
     input_object_type = 1
     start_time = time.time()
     txt_index_documents_val = TextIndexDocuments(connect_url='http://localhost:9200/')
+    #txt_search_documents_val = TextSearchDocuments(connect_url='http://localhost:9200/')
+
     txt_search_documents_val = TextSearchDocuments(connect_url='http://localhost:9200/')
 
     txt_index_documents_val.add_documents(docs_to_check_list=list_docs,
@@ -80,8 +83,13 @@ if __name__ == '__main__':
                                           key=input_key,
                                           object_type=input_object_type)
 
-    res = txt_search_documents_val.check_for_text(object_type=input_object_type,
-                                                  string_look_for=input_look_for, max_list_size=10)
+
+    res = txt_search_documents_val.check_for_text(  object_type=input_object_type,
+                                            string_look_for=input_look_for,
+                                            max_list_size=100)
+
+
     print("--- %s seconds ---" % (time.time() - start_time))
+    res.sort()
     print(res)
 
